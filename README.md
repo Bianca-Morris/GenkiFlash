@@ -1,10 +1,12 @@
 # GenkiFLASH
+```
 By: Bianca Morris
 Bianca-Morris on Github
 biancaallynm.wordpress.com
+```
 
 ##About
-GenkiFLASH is be a simple, but rich freeware flash card program for Japanese language learners. Currently, the program allows users to memorize vocabulary words, but additional functionality, such as the ability to create and import wordlists and practice conjugation patterns.
+GenkiFLASH is a simple, but rich freeware flash card program for Japanese language learners. Currently, the program allows users to memorize vocabulary words, but additional functionality, such as the ability to create and import wordlists and practice conjugation patterns, will be added soon.
 
 The word lists and conjugation patterns used coicide with the Genki I & II Textbooks by Eri Banno because these are the textbooks used in Wellesley's Japanese courses. Please note, however, that this program is not in anyway affiliated with the Genki franchise, and access to it is not to be sold for profit under any circumstance.
 
@@ -31,6 +33,7 @@ You may not claim ownership of or credit for this project.
 Feel free to share or redistribute as you desire.
 
 
-
+```
 Thanks for taking a look at my program!
 Download a .exe version [here](#).
+```

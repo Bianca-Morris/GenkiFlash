@@ -12,6 +12,13 @@ The word lists and conjugation patterns used coicide with the Genki I & II Textb
 
 This project is currently INCOMPLETE. As such, there are many bugs and issues that are listed below. If you find a bug that is not listed below, however, please submit a bug report in the comment section [here](https://biancaallynm.wordpress.com/contact/). 
 
+##Installation
+Extract the .zip to your chosen location to install. Locate the genkiFLASH_Testing.exe  file inside of the \dist file and click to start. You may have to make an exception in your antivirus software in order for the program to run properly.
+
+To create a shortcut for your desktop, right click on the .exe file and select 'create shortcut.' Drag and drop the generated file onto your desktop and enjoy!
+
+To uninstall, simply delete the GenkiFlash_V.#.#.# folder, as well as any shortcuts you may have created.
+
 ##Known Bugs/Issues
 - Pressing "check" multiple times before clicking "next" adds multiple points to the current score, instead of just one.
 - Scores do not always order themselves on the high score page correctly.
@@ -32,8 +39,11 @@ Decks & Wordlists
 You may not claim ownership of or credit for this project.
 Feel free to share or redistribute as you desire.
 
+##Credits
+Written in Python; Py2Exe and Tkinter modules used for the .exe and GUI, respectively.
+Genki Textbooks by Eri Banno
 
 ```
 Thanks for taking a look at my program!
-Download a .exe version [here](#).
+Download a .exe version for testing [here](https://biancaallynm.wordpress.com/programming/).
 ```

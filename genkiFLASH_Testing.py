@@ -19,7 +19,6 @@ class GenkiFLASH(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
         self.parent = parent
-        self.checked = False
         
         #scoring variables
         self.highscore = 0
@@ -293,10 +292,13 @@ class GenkiFLASH(Frame):
         skipButton = Button(guessWindow, text="Next",command=self.onNextButton)
         skipButton.grid(row=3, column =2)
        
+        self.updateScore = StringVar()
+        self.updateScore.set("Score: 0")
+        
         hiScore = Label(guessWindow, text=("High score: "+ str(self.highscore)))
         hiScore.grid(row=4, column=1)
         
-        score = Label(guessWindow, text=("Score: " + str(self.playerScore)))
+        score = Label(guessWindow, textvariable=self.updateScore)
         score.grid(row=4, column=3)
         
         #Card currently being guessed
@@ -311,7 +313,6 @@ class GenkiFLASH(Frame):
             self.instructions.config(text = "Click 'next' to deal another card.")        
 
     def onNextButton(self):
-        self.checked = False
         if len(self.deck) > 0:
             self.gameWindow.destroy()
             self.dealCard()
@@ -320,15 +321,13 @@ class GenkiFLASH(Frame):
         
     def checkEntry(self):
         #If answer is correct:
-        print str(self.checked)
-        if (((self.guess.get()).lower() in self.back) or ((self.guess.get()).lower() == self.back)) and (len(self.guess.get()) != 0):
+        if (((self.guess.get()).lower() in self.back) or 
+        ((self.guess.get()).lower() == self.back)) and (len(self.guess.get()) != 0):
             self.backCard.itemconfig(self.backLabel, text="Correct!")
             self.backCard.config(background="green")
             self.instructions.config(text = "Awesome! Click next to draw a new card")
-            if self.checked == False:
-                self.playerScore +=1
-                self.checked == True
-            
+            self.playerScore += 1
+             
             #Updates player scoring variables
             if self.playerScore >= self.highscore:
                 self.highscore = self.playerScore
@@ -339,22 +338,28 @@ class GenkiFLASH(Frame):
             if (self.playerScore < self.secondbest) and (self.playerScore > self.thirdbest):
                 self.thirdbest = self.playerScore
                 self.thirdbestdate = now.strftime("%m-%d-%Y %H:%M")
-                
+    
             self.gameState = 1
+            
         #Temporary fix for the bug where if you enter nothing, you still get points
         elif len(self.guess.get()) == 0:
             self.backCard.itemconfig(self.backLabel, text="Incorrect!")
             self.backCard.config(background="red")
-            self.instructions.config(text = "Too bad... the correct answer was: "+str(self.back) +". Click next to draw a new card.")
+            self.instructions.config(text = "Too bad... the correct answer was: "+
+            str(self.back) + ". Click next to draw a new card.")
             self.playerScore = 0
             self.gameState = 1
+            
         #If answer is wrong:
         else:
             self.backCard.itemconfig(self.backLabel, text="Incorrect!")
             self.backCard.config(background="red")
-            self.instructions.config(text = "Too bad... the correct answer was: "+str(self.back) +". Click next to draw a new card.")
+            self.instructions.config(text = "Too bad... the correct answer was: "+
+            str(self.back) + ". Click next to draw a new card.")
             self.playerScore = 0
             self.gameState = 1
+            
+        self.updateScore.set("Score: " + str(self.playerScore))
         
     def newCard(self):
         """Selects a new card and updates the canvas; returns a tuple with the 

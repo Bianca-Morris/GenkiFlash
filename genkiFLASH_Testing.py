@@ -137,7 +137,7 @@ class GenkiFLASH(Frame):
         self.statusLabel.config(text="Loading your chosen deck...")
 
         #Sets up Card deck
-        cardDeck = self.setUpDeck(self.VL.get())
+        self.setUpDeck(self.VL.get())
         if self.VL2.get() == "Translation":
             self.translationGameInit(self.VL3.get())
         elif self.VL2.get() == "Conjugation":
@@ -252,6 +252,7 @@ class GenkiFLASH(Frame):
         self.back = self.card[1]
         
         self.updateGUIforNewCard()
+        
     
     def updateGUIforNewCard(self):
         #Creates GUI
@@ -292,13 +293,16 @@ class GenkiFLASH(Frame):
         skipButton = Button(guessWindow, text="Next",command=self.onNextButton)
         skipButton.grid(row=3, column =2)
        
-        self.updateScore = StringVar()
-        self.updateScore.set("Score: 0")
+        self.updateHiScore = StringVar()
+        self.updateHiScore.set("High Score: " + str(self.highscore))
         
-        hiScore = Label(guessWindow, text=("High score: "+ str(self.highscore)))
+        hiScore = Label(guessWindow, textvariable=self.updateHiScore)
         hiScore.grid(row=4, column=1)
         
-        score = Label(guessWindow, textvariable=self.updateScore)
+        self.updatePlayerScore = StringVar()
+        self.updatePlayerScore.set("Score: " + str(self.playerScore))
+        
+        score = Label(guessWindow, textvariable=self.updatePlayerScore)
         score.grid(row=4, column=3)
         
         #Card currently being guessed
@@ -307,7 +311,8 @@ class GenkiFLASH(Frame):
             self.backCard.itemconfig(self.backLabel, text=" ")
             self.backCard.config(background="white")
             self.frontCard.itemconfig(self.backLabel, text=self.front)
-            self.instructions.config(text="Translate the term into " + str(self.transFrom) + " in the space below")
+            self.instructions.config(text="Translate the term into " + 
+            str(self.transFrom) + " in the space below")
         #Needs new card
         else:
             self.instructions.config(text = "Click 'next' to deal another card.")        
@@ -327,18 +332,8 @@ class GenkiFLASH(Frame):
             self.backCard.config(background="green")
             self.instructions.config(text = "Awesome! Click next to draw a new card")
             self.playerScore += 1
-             
-            #Updates player scoring variables
-            if self.playerScore >= self.highscore:
-                self.highscore = self.playerScore
-                self.highscoredate = now.strftime("%m-%d-%Y %H:%M") 
-            if (self.playerScore < self.highscore) and (self.playerScore >= self.thirdbest):
-                self.secondbest = self.playerScore
-                self.secondbestdate = now.strftime("%m-%d-%Y %H:%M")
-            if (self.playerScore < self.secondbest) and (self.playerScore > self.thirdbest):
-                self.thirdbest = self.playerScore
-                self.thirdbestdate = now.strftime("%m-%d-%Y %H:%M")
-    
+            
+            self.updateScores()
             self.gameState = 1
             
         #Temporary fix for the bug where if you enter nothing, you still get points
@@ -359,8 +354,38 @@ class GenkiFLASH(Frame):
             self.playerScore = 0
             self.gameState = 1
             
-        self.updateScore.set("Score: " + str(self.playerScore))
+        self.updatePlayerScore.set("Score: " + str(self.playerScore))
+        self.updateHiScore.set("High Score: " + str(self.highscore))
         
+    def updateScores(self):
+        """Updates the scores according to the curent playerScore"""
+        #NOT FINAL - I know there's got to be a better way to do this...
+        if (self.playerScore > self.highscore):
+            self.thirdbest = self.secondbest
+            self.thirdbestdate = self.secondbestdate
+            
+            self.secondbest = self.highscore
+            self.secondbestdate = self.highscoredate
+            
+            self.highscore = self.playerScore
+            self.highscoredate = now.strftime("%m/%d/%Y %I:%M")
+            
+        elif (self.playerScore > self.secondbest) and (self.playerScore <= 
+        self.highscore):
+            self.thirdbest = self.secondbest
+            self.thirdbestdate = self.secondbestdate
+            
+            self.secondbestdate = now.strftime("%m/%d/%Y %I:%M")
+            self.secondbest = self.playerScore
+            
+        elif (self.playerScore > self.thirdbest) and (self.playerScore <=
+        self.secondbest):
+            self.thirdbest = self.playerScore
+            self.thirdbestdate = now.strftime("%m/%d/%Y %I:%M")
+             
+        else:
+            pass
+            
     def newCard(self):
         """Selects a new card and updates the canvas; returns a tuple with the 
         front and back of the card."""
@@ -386,35 +411,16 @@ class GenkiFLASH(Frame):
         if self.playerScore >= self.highscore:
             if tkMessageBox.askyesno(
                 "New High Score!", 
-                ("Your score is "+str(self.playerScore)+ ". Would you like to add it to the Hall of Fame?")
+                ("Your score is "+str(self.playerScore)+ ". Would you like to see the Hall of Fame?")
                 ):
-                self.addScorePopUp()
-            else:
-                pass
-        else:
+                self.seeHighScores()
             if tkMessageBox.askyesno(
                 "End of deck.", 
                 ("Your final score is " + str(self.playerScore)+ ". Would you like to start a new game?")
                 ):
                 self.initNewGameOptionsUI()
             else:
-                pass
-                
-    def addScorePopUp(self):
-        """Spawns a pop-up allowing the player to submit their name into the Hall of Fame."""
-        popUp = TopLevel(self.gameWindow)
-        popUp.title = "New High Score!"
-        
-        addScoreMessage = Message(popUp, text="Submit your name to the Hall of Fame below:")
-        addScoreMessage.pack()
-        
-        enterName = Entry(popUp, "Enter name here!")
-        enterName.pack()
-        
-        self.addScoretoHOF()
-        
-    def addScoretoHOF(self):
-        print "Adding Score!"        
+                pass             
                                 
     def seeHighScores(self):
         """Initializes 'High Score' GUI"""

@@ -183,7 +183,7 @@ class GenkiFLASH(Frame):
             return self.deck 
         elif Var1 == "Adj - NA":
             for index in range(0, len(genkiWords.adj)-1):
-                if genkiWords.adj[index]['type'] == "ru":
+                if genkiWords.adj[index]['type'] == "na":
                     self.deck.append(genkiWords.adj[index])
             return self.deck
 

@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-# sys.setdefaultencoding() does not exist, here!
+# Written by: Bianca Allyn Morris
+# 2016
+# Current Version: v.0.1.2-alpha
+
+"Following 3 lines taken from user EOL on StackOverflow.com, as a means of changing the default encoding to unicode."
 import sys
-reload(sys)  # Reload does the trick!
+reload(sys) 
 sys.setdefaultencoding('UTF8')
 
-# -*- coding: utf-8 -*-
 from Tkinter import *
 import tkMessageBox
 import random
 import genkiWords
 import datetime
 import tkSimpleDialog
-    
-now = datetime.datetime.now()
     
 class GenkiFLASH(Frame):
     """Starts the program"""
@@ -358,7 +359,7 @@ class GenkiFLASH(Frame):
         self.updateHiScore.set("High Score: " + str(self.highscore))
         
     def updateScores(self):
-        """Updates the scores according to the curent playerScore"""
+        """Updates the scores according to the current playerScore"""
         #NOT FINAL - I know there's got to be a better way to do this...
         if (self.playerScore > self.highscore):
             self.thirdbest = self.secondbest
@@ -368,6 +369,7 @@ class GenkiFLASH(Frame):
             self.secondbestdate = self.highscoredate
             
             self.highscore = self.playerScore
+            now = datetime.datetime.now()
             self.highscoredate = now.strftime("%m/%d/%Y %I:%M")
             
         elif (self.playerScore > self.secondbest) and (self.playerScore <= 
@@ -375,12 +377,14 @@ class GenkiFLASH(Frame):
             self.thirdbest = self.secondbest
             self.thirdbestdate = self.secondbestdate
             
+            self.secondbest = self.playerScore            
+            now = datetime.datetime.now()
             self.secondbestdate = now.strftime("%m/%d/%Y %I:%M")
-            self.secondbest = self.playerScore
-            
+
         elif (self.playerScore > self.thirdbest) and (self.playerScore <=
         self.secondbest):
             self.thirdbest = self.playerScore
+            now = datetime.datetime.now()
             self.thirdbestdate = now.strftime("%m/%d/%Y %I:%M")
              
         else:
@@ -505,10 +509,10 @@ class GenkiFLASH(Frame):
         """Spawns a pop-up window with information about GenkiFlash"""
         tkMessageBox.showinfo(
             "About GenkiFlash",
-            ("Thank you for using GenkiFlash!" +
+            ("Thank you for using GenkiFlash V0.1.1-Alpha!" + "\n" +
             "\n GenkiFlash was created in 2015 by Bianca Allyn Morris." +
-            "\n Learn more about this software at biancaallynm.wordpress.com/programming/." +
-            "\n Please note that GenkiFlash is not an affiliate of the textbooks by Eri Banno."
+            "\n Check for new releases on github.com/Bianca-Morris/Genki-Flash/." +
+            "\n Please note that GenkiFlash is not affiliated with GenkiI."
             )
         )
                                 
